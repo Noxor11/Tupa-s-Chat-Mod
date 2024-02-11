@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
+using Vintagestory.GameContent;
 
 
 
@@ -140,7 +144,7 @@ namespace ChatMod  {
             StringBuilder stringBuilder = new();
             foreach (var word in message.Split(" ")){
                 // let's check if it's a link 
-                if (word.StartsWith("http")){
+                if (word.StartsWith("http://") || word.StartsWith("http://") || word.StartsWith("handbook://")){
                     string parsedLink = "<a href=\"" + word + "\" >" + word + "</a>";
                     stringBuilder.Append(parsedLink + " ");
                 } else
@@ -148,5 +152,35 @@ namespace ChatMod  {
             }
             message = stringBuilder.ToString().Trim();
         }
+
+        public static void OnNewClientToServerChatLine(int groupId, ref string message, EnumChatType chattype, string data) {
+            CurrentItemToHandbookURI(ref message);
+        }
+
+        /**
+            The following code belongs to William Blake Galbreath, with MIT License, and it contains 
+            slight modifications to allow for client side resolution of the current item,
+            as well as hyperlink rendering on client side only.
+        */
+        [SuppressMessage("GeneratedRegex", "SYSLIB1045:Convert to \'GeneratedRegexAttribute\'.")]
+        private static readonly Regex ITEM_LINK = new(@"(\[item\])", RegexOptions.IgnoreCase);
+        private static void CurrentItemToHandbookURI(ref string message) {
+            MatchCollection matches = ITEM_LINK.Matches(message);
+            if (matches.Count == 0) {
+                return;
+            }
+
+            int slotNum = clientAPI.World.Player.InventoryManager.ActiveHotbarSlotNumber;
+            ItemStack itemStack = clientAPI.World.Player.InventoryManager.GetHotbarItemstack(slotNum);
+            string pageCode = itemStack == null ? "" : GuiHandbookItemStackPage.PageCodeForStack(itemStack);
+
+            string replacement = $"{(pageCode is { Length: > 0 } ?
+                $"{itemStack!.GetName()}: handbook://{pageCode}" :
+                itemStack?.GetName() ?? Lang.Get("game:nothing"))}";
+            
+            foreach (Match match in matches) {
+                message = message.Replace(match.Value, replacement);
+        }
+    }
     }
 }

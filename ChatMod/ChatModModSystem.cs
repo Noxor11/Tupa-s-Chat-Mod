@@ -18,7 +18,7 @@ namespace ChatMod
         static public ICoreClientAPI clientAPI;
         static public HudElement chat;        
         static Harmony harmony;
-        public override bool AllowRuntimeReload => true;
+        // public override bool AllowRuntimeReload => true; // not existing in 1.19.3
         public override bool ShouldLoad(EnumAppSide side) => side.IsClient();
 
         public override void StartClientSide(ICoreClientAPI api)
@@ -60,6 +60,11 @@ namespace ChatMod
             new Harmony(harmonyId).Patch(
                 AccessTools.Method(chat.GetType(), "OnNewServerToClientChatLine"),
                 prefix: new HarmonyMethod(AccessTools.Method(typeof(CustomChat), "OnNewServerToClientChatLine"))
+            );       
+            
+            new Harmony(harmonyId).Patch(
+                AccessTools.Method(chat.GetType(), "OnNewClientToServerChatLine"),
+                prefix: new HarmonyMethod(AccessTools.Method(typeof(CustomChat), "OnNewClientToServerChatLine"))
             );       
         }
     }
