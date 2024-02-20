@@ -3,9 +3,9 @@
     "modid": "tupaschatmod",
     "name": "Tupa's Chat Mod",
     "authors": ["Tupa <3"],
-    "side": "Universal",
+    "side": "Client",
     "description": "A mod that improves the default chat with http/s link handling, better movility between group chats, and group chat locking.",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "dependencies": {
         "game": "1.18.15"
     }

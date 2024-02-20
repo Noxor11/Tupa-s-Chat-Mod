@@ -144,7 +144,7 @@ namespace ChatMod  {
             StringBuilder stringBuilder = new();
             foreach (var word in message.Split(" ")){
                 // let's check if it's a link 
-                if (word.StartsWith("http://") || word.StartsWith("http://") || word.StartsWith("handbook://")){
+                if (word.StartsWith("http://") || word.StartsWith("https://") || word.StartsWith("handbook://")){
                     string parsedLink = "<a href=\"" + word + "\" >" + word + "</a>";
                     stringBuilder.Append(parsedLink + " ");
                 } else
