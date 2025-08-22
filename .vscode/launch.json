@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${env:VINTAGE_STORY}/Vintagestory.exe",
             "linux": {
-                "program": "${env:VINTAGE_STORY}/Vintagestory"
+                "program": "${env:VINTAGE_STORY}/Vintagestory.dll"
             },
             "osx": {
                 "program": "${env:VINTAGE_STORY}/Vintagestory"
@@ -33,7 +33,7 @@
             "request": "launch",
             "program": "${env:VINTAGE_STORY}/VintagestoryServer.exe",
             "linux": {
-                "program": "${env:VINTAGE_STORY}/VintagestoryServer"
+                "program": "${env:VINTAGE_STORY}/VintagestoryServer.dll"
             },
             "osx": {
                 "program": "${env:VINTAGE_STORY}/VintagestoryServer"
@@ -52,7 +52,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build (Cake)",
-            "program": "${workspaceFolder}/CakeBuild/bin/Debug/net7.0/CakeBuild.dll",
+            "program": "${workspaceFolder}/CakeBuild/bin/Debug/net8.0/CakeBuild.dll",
             "args": [],
             "cwd": "${workspaceFolder}/CakeBuild",
             "stopAtEntry": false,
