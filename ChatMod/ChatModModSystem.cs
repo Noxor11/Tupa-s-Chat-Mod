@@ -1,16 +1,11 @@
 ﻿using Vintagestory.API.Common;
 using Vintagestory.API.Client;
-using System;
-using System.Linq;
 using HarmonyLib;
-using System.Runtime.InteropServices;
-using System.Reflection;
-using Vintagestory.API.Server;
-using Vintagestory.API.Common.CommandAbbr;
+using Vintagestory.API.Config;
 
 namespace ChatMod
 {
-    
+
     public class ChatModModSystem : ModSystem
     {
 
@@ -52,10 +47,13 @@ namespace ChatMod
                 prefix: new HarmonyMethod(AccessTools.Method(typeof(CustomChat), "OnKeyDown"))
             );
 
-            new Harmony(harmonyId).Patch(
-                AccessTools.Method(chat.GetType(), "OnFinalizeFrame"),
-                prefix: new HarmonyMethod(AccessTools.Method(typeof(CustomChat), "OnFinalizeFrame"))
-            );
+            // Starting from version 1.20.0, the chat keeps focus on the current tab.
+            if (GameVersion.IsLowerVersionThan(GameVersion.APIVersion, "1.20.0")) {
+                    new Harmony(harmonyId).Patch(
+                    AccessTools.Method(chat.GetType(), "OnFinalizeFrame"),
+                    prefix: new HarmonyMethod(AccessTools.Method(typeof(CustomChat), "OnFinalizeFrame"))
+                );
+            }
 
             new Harmony(harmonyId).Patch(
                 AccessTools.Method(chat.GetType(), "OnNewServerToClientChatLine"),

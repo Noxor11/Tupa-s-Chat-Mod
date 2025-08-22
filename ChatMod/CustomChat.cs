@@ -1,23 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
-using Vintagestory.API.Datastructures;
-using Vintagestory.API.Server;
-using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
 
 
-namespace ChatMod  {
-    
+namespace ChatMod {
     public class CustomChat {
 
         public static ICoreClientAPI clientAPI {
@@ -69,9 +63,13 @@ namespace ChatMod  {
                 }
             }
 
-            if (args.KeyCode == (int)GlKeys.L){
-                ToggleChannelLocked();
+            // Starting from version 1.20.0, the chat keeps focus on the current tab.
+            if (GameVersion.IsLowerVersionThan(GameVersion.APIVersion, "1.20.0")) {
+                if (args.KeyCode == (int)GlKeys.L){
+                    ToggleChannelLocked();
+                }
             }
+
             return;
         }
 

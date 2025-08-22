@@ -5,7 +5,7 @@
     "authors": ["Tupa <3"],
     "side": "Client",
     "description": "A mod that improves the default chat with http/s link handling, better movility between group chats, and group chat locking.",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "dependencies": {
         "game": "1.18.15"
     }
